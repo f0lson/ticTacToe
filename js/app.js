@@ -1,17 +1,11 @@
 // player object
+
+document.addEventListener('DOMContentLoaded', () => {
+
 class Player {
     constructor ( isTurn, playerNumber ) {
         this.isTurn = isTurn;
         this.playerNumber = playerNumber;
-    }
-
-    get marker () {
-        let number = this.playerNumber;
-        if( number === 0) {
-            return `url('img/o.svg')`;
-        } else {
-            return `url('img/x.svg')`;
-        }
     }
 }
 
@@ -42,15 +36,47 @@ const winningCombos = [
     [2, 4, 6]
 ];
 
-// adding IDs to boxes
-const boxes = document.querySelectorAll('.box');
-for (var i = 0; i < boxes.length; i++) {
-    boxes[i].id = i;
-    boxes[i].style.backgroundImage = player1.marker;
+//move counter
+let moveCounter = 0;
+if ( moveCounter > 0 ) {
+    startScreen.style.display = 'none';
+    startScreen.style.top = 0;
 }
 
-// const hoverSquare = ( element, backgroundImage ) {
-//     if ( element) {
-//
-//     }
-// };
+// check win after the 4th move
+const checkWin = () => {};
+
+// adding IDs to boxes
+const boxesContainer = document.querySelector('.boxes');
+const boxes = boxesContainer.querySelectorAll('li');
+for (var i = 0; i < boxes.length; i++) {
+    boxes[i].id = i;
+}
+
+boxesContainer.addEventListener('mouseover', (e) => {
+    let element = e.target;
+    if ( player1box.classList.contains('active') ) {
+        hoverSquare( element, `url(img/o.svg)` );
+    } else {
+        hoverSquare( element, `url(img/x.svg)` );
+    }
+});
+
+boxesContainer.addEventListener('mouseout', (e) => {
+    let element = e.target;
+    unhoverSquare( element );
+});
+
+const hoverSquare = ( element, bgImg ) => {
+    if ( !element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2') ) {
+        element.style.backgroundImage = bgImg;
+    }
+};
+
+const unhoverSquare = ( element ) => {
+    if ( !element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2') ) {
+        element.style.backgroundImage = '';
+    }
+}
+
+});
