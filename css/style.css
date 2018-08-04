@@ -148,8 +148,3 @@ h1 {
     z-index: 100;
     transition: top 500ms ease;
 }
-
-.box-marked-o,
-.box-marked-x {
-    cursor: none;
-}
