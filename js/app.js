@@ -1,13 +1,3 @@
-class Player {
-    constructor ( isTurn, playerNumber ) {
-        this.isTurn = isTurn;
-        this.playerNumber = playerNumber;
-    }
-};
-
-const player1 = new Player( 'Forrest', true, 0 );
-const player2 = new Player( 'Hillary', false, 1 );
-
 const player1box = document.querySelector('#player1');
 const player2box = document.querySelector('#player2');
 
@@ -37,10 +27,6 @@ let player2marked = new Array();
 
 //move counter
 let moveCounter = 0;
-if ( moveCounter > 0 ) {
-    startScreen.style.display = 'none';
-    startScreen.style.top = 0;
-}
 
 // adding IDs to boxes
 const boxesContainer = document.querySelector('.boxes');
@@ -69,20 +55,50 @@ boxesContainer.addEventListener('click', (e) => {
         if ( player1box.classList.contains('active') ) {
             element.classList.add('box-filled-1');
             player1marked.push(squareId);
+            player1marked.sort( (x, y) => x - y );
         } else {
             element.classList.add('box-filled-2');
             player2marked.push(squareId);
+            player2marked.sort( (x, y) => x - y );
         }
         switchPlayer();
-        moveCounter++;
+        moveAcc();
         if ( moveCounter > 1 ) {
             startScreen.style.display = 'none';
+        }
+        if ( moveCounter > 4 ) {
+            if ( checkWin(player1marked) ) {
+                document.querySelector('body').style.backgroundColor = 'orange';
+                console.log(`Player 2 wins`);
+            }
+            if ( checkWin(player2marked) ) {
+                document.querySelector('body').style.backgroundColor = 'dodgerblue';
+                console.log(`Player 2 wins`);
+            }
         }
         console.log(`Turn: ${moveCounter} -- Player 1 squares: ${player1marked}`);
         console.log(`Turn: ${moveCounter} -- Player 2 squares: ${player2marked}`);
     }
 
 });
+
+const checkWin = player => {
+    // iterate thru winning combinations
+    for (let i = 0; i < winningCombos.length; i++) {
+        // go into the combinations and see if they contain some of the numbers that the player's marked arrays contain
+        if ( winningCombos[i].some(combo => player.indexOf(combo) >= 0) ) {
+            // if it does contain one of the numbers, then test the whole thing
+            if ( winningCombos[i].every(combo => player.indexOf(combo) >= 0) ) {
+                document.querySelector('body').style.backgroundColor = 'green';
+                return true;
+            }
+        }
+    }
+}
+// move accumulator
+const moveAcc = () => {
+    moveCounter++;
+}
 
 const switchPlayer = () => {
     if ( player1box.classList.contains('active') ) {
@@ -108,11 +124,26 @@ const unhoverSquare = ( element ) => {
     }
 }
 
-const resetBoard = () => {
-    startScreen.style.display = 'block';
-    startScreen.style.top = '0';
+const clearBoard = ( arr ) => {
+    arr.forEach( box => {
+        box.style.backgroundImage = '';
+        box.classList.remove('box-filled-1');
+        box.classList.remove('box-filled-2');
+    });
 }
 
-const newGame = () => {
+// const showWinner = ( player ) => {
+//     if ( player.classList.contains ) {
+//
+//     }
+// }
 
+const resetGame = () => {
+    moveCounter = 0;
+    if ( player2box.classList.contains('active') ) {
+        player2box.classList.remove('active');
+        player1box.classList.add('active');
+    }
+    startScreen.style.display = 'block';
+    startScreen.style.top = 0;
 }
