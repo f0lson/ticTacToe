@@ -4,6 +4,7 @@
 
     To Do:
     1. configure showWin() to deal with empty string in input
+        i. want it to say "Player 1/2 wins!" if they do not enter a name.
     2. configure showWin() to show tie page
 */
 ( function() {
@@ -121,6 +122,7 @@
                     }
                 }
                 if ( moveCounter === 9 ) {
+                    showWinner('tie');
                     console.log(`Cat's game!`);
                 }
                 console.log(`Turn: ${moveCounter} -- Player 1 squares: ${player1marked}`);
@@ -191,12 +193,20 @@
                 }
                 finish.classList.add('screen-win-one');
                 message.textContent = `${p1Name} wins!`;
-            } else {
+            }
+            if ( player === 2){
                 if ( finish.classList.contains('screen-win-one') ) {
                     finish.classList.remove('screen-win-one');
                 }
                 finish.classList.add('screen-win-two');
                 message.textContent = `${p2Name} wins!`;
+            }
+            if ( player === 'tie' ) {
+                if ( finish.classList.contains('screen-win-one') || finish.classList.contains('screen-win-two') ) {
+                    finish.classList.remove('screen-win-one');
+                }
+                finish.classList.add('screen-tie');
+                message.textContent = `Cat's game! It's a tie!`;
             }
         }
 

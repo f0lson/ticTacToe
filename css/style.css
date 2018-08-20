@@ -118,6 +118,14 @@ h1 {
     top: 4.5rem;
 }
 
+.screen-tie {
+    background: rgba( 60, 60, 60, 1 );
+}
+
+.screen-tie .button {
+    color: rgba( 25, 25, 25, 1 );
+}
+
 .board {
     padding-top: 1em;
 }
@@ -224,6 +232,7 @@ h1 {
 
 .screen-start-names {
     width: 70%;
+    max-width: 600px;
     margin: 40px auto;
     padding: 10px;
     display: flex;
