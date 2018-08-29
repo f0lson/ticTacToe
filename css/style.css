@@ -30,6 +30,7 @@ h1 {
 }
 
 .button:hover {
+    transform: scale(1.05);
     color: #000;
 }
 
@@ -106,7 +107,7 @@ h1 {
 }
 
 .screen-win-two {
-    background: #3688C3;
+    background-color: #3688C3;
 }
 
 .screen-win-two .button {

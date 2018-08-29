@@ -1,15 +1,5 @@
-/*
-    YOU HAVE TO PROGRAM THIS IN THE MODULAR PATTERN -- SEE TREEHOUSE COURSE
-    Course Video: https://teamtreehouse.com/library/the-module-pattern-in-javascript
-
-    To Do:
-    1. configure showWin() to deal with empty string in input
-        i. want it to say "Player 1/2 wins!" if they do not enter a name.
-    2. configure showWin() to show tie page
-*/
 ( function() {
-
-
+        // player variables
         const player1box = document.querySelector('#player1');
         const player2box = document.querySelector('#player2');
         const player1Name = document.querySelector('#player1 p');
@@ -31,6 +21,7 @@
             player2NameInput.value = '';
         }
 
+        // function to randomly generate who starts
         const randomStart = () => {
             let randomNumber = Math.floor( Math.random()*2+1);
             if ( randomNumber === 1 ) {
@@ -45,8 +36,6 @@
                 player2box.classList.add('active');
             }
         }
-
-        console.log(randomStart());
 
         startButton.addEventListener('click', () => {
             startScreen.style.top = '-100vh';
@@ -67,6 +56,7 @@
             [2, 4, 6]
         ];
 
+        // creating arrays to house player selections
         let player1marked = new Array();
         let player2marked = new Array();
 
@@ -80,6 +70,7 @@
             boxes[i].id = i;
         }
 
+        // hovering styles added and removed on mouseover/mouseout
         boxesContainer.addEventListener('mouseover', (e) => {
             let element = e.target;
             if (player1box.classList.contains('active')) {
@@ -111,24 +102,25 @@
                 if (moveCounter > 1) {
                     startScreen.style.display = 'none';
                 }
+                // start checking for wins after 4th move
                 if (moveCounter > 4) {
                     if (checkWin(player1marked)) {
                         showWinner(1);
-                        console.log(`Player 1 wins`);
                     }
                     if (checkWin(player2marked)) {
                         showWinner(2);
-                        console.log(`Player 2 wins`);
                     }
                 }
-                if ( moveCounter === 9 ) {
-                    showWinner('tie');
-                    console.log(`Cat's game!`);
+                if ( moveCounter === 9 && checkWin(player1marked) ) {
+                    showWinner(1);
                 }
-                console.log(`Turn: ${moveCounter} -- Player 1 squares: ${player1marked}`);
-                console.log(`Turn: ${moveCounter} -- Player 2 squares: ${player2marked}`);
+                if ( moveCounter === 9 && checkWin(player2marked) ) {
+                    showWinner(2);
+                }
+                if ( moveCounter === 9 && !checkWin(player1marked) && !checkWin(player2marked) ) {
+                    showWinner('tie');
+                }
             }
-
         });
 
         const checkWin = player => {
@@ -136,7 +128,7 @@
             for (let i = 0; i < winningCombos.length; i++) {
                 // go into the combinations and see if they contain some of the numbers that the player's marked arrays contain
                 if (winningCombos[i].some(combo => player.indexOf(combo) >= 0)) {
-                    // if it does contain one of the numbers, then test the whole thing
+                    // if it does contain one of the numbers, then test for winning combo
                     if (winningCombos[i].every(combo => player.indexOf(combo) >= 0)) {
                         return true;
                     }
@@ -147,7 +139,7 @@
         const moveAcc = () => {
             moveCounter++;
         }
-
+        // switch to next player
         const switchPlayer = () => {
             if (player1box.classList.contains('active')) {
                 player1box.classList.remove('active');
@@ -157,7 +149,7 @@
                 player1box.classList.add('active');
             }
         }
-
+        // add user's marker to square bg on hover
         const hoverSquare = (element, bgImg) => {
             // if the element doesn't have a class of box-filled-1 or box-filled-2
             if (!element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2')) {
@@ -165,14 +157,14 @@
                 element.style.backgroundImage = bgImg;
             }
         }
-
+        // removing bg-img on mouse off
         const unhoverSquare = (element) => {
             if (!element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2')) {
                 element.style.backgroundImage = '';
             }
         }
-
-        const clearBoard = (arr) => {
+        // clearing the board
+        const clearBoard = arr => {
             arr.forEach(box => {
                 box.style.backgroundImage = '';
                 box.classList.remove('box-filled-1');
@@ -181,41 +173,34 @@
             player1marked = [];
             player2marked = [];
         }
-
-        const showWinner = (player) => {
+        // showing winner
+        const showWinner = player => {
             finish.style.display = 'block';
             let message = finish.querySelector('.message');
             let p1Name = player1Name.textContent;
             let p2Name = player2Name.textContent;
+            finish.classList.remove('screen-win-one');
+            finish.classList.remove('screen-win-two');
+            finish.classList.remove('screen-tie');
             if (player === 1) {
-                if ( finish.classList.contains('screen-win-two') ) {
-                    finish.classList.remove('screen-win-two');
-                }
                 finish.classList.add('screen-win-one');
                 message.textContent = `${p1Name} wins!`;
             }
             if ( player === 2){
-                if ( finish.classList.contains('screen-win-one') ) {
-                    finish.classList.remove('screen-win-one');
-                }
                 finish.classList.add('screen-win-two');
                 message.textContent = `${p2Name} wins!`;
             }
             if ( player === 'tie' ) {
-                if ( finish.classList.contains('screen-win-one') || finish.classList.contains('screen-win-two') ) {
-                    finish.classList.remove('screen-win-one');
-                }
                 finish.classList.add('screen-tie');
                 message.textContent = `Cat's game! It's a tie!`;
             }
         }
-
         // reset game
         const newGameButton = document.querySelector('#finish .button');
         newGameButton.addEventListener('click', () => {
             resetGame();
         });
-
+        // resetting game
         const resetGame = () => {
             moveCounter = 0;
             if (player2box.classList.contains('active')) {
@@ -223,8 +208,7 @@
                 player1box.classList.add('active');
             }
             finish.style.display = 'none';
-            startScreen.style.display = 'block';
-            startScreen.style.top = 0;
+            randomStart();
             clearBoard(boxes);
         }
 }());
