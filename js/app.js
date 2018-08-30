@@ -4,11 +4,13 @@
         const player2box = document.querySelector('#player2');
         const player1Name = document.querySelector('#player1 p');
         const player2Name = document.querySelector('#player2 p');
+
         // start screen
         const startScreen = document.querySelector('.screen-start');
         const startButton = startScreen.querySelector('.button');
         const player1NameInput = startScreen.querySelector('input#screen-start-name-1');
         const player2NameInput = startScreen.querySelector('input#screen-start-name-2');
+
         // setting player names
         const setPlayerNames = () => {
             let p1NameValue = player1NameInput.value;
@@ -66,6 +68,7 @@
             unhoverSquare(element);
         });
 
+        // boxes click event handler
         boxesContainer.addEventListener('click', (e) => {
             let element = e.target;
             if (!element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2')) {
@@ -117,10 +120,12 @@
                 }
             }
         }
+
         // move accumulator
         const moveAcc = () => {
             moveCounter++;
         }
+
         // switch to next player
         const switchPlayer = () => {
             if (player1box.classList.contains('active')) {
@@ -131,6 +136,7 @@
                 player1box.classList.add('active');
             }
         }
+
         // add user's marker to square bg on hover
         const hoverSquare = (element, bgImg) => {
             // if the element doesn't have a class of box-filled-1 or box-filled-2
@@ -139,12 +145,14 @@
                 element.style.backgroundImage = bgImg;
             }
         }
+
         // removing bg-img on mouse off
         const unhoverSquare = (element) => {
             if (!element.classList.contains('box-filled-1') && !element.classList.contains('box-filled-2')) {
                 element.style.backgroundImage = '';
             }
         }
+
         // clearing the board
         const clearBoard = arr => {
             arr.forEach(box => {
@@ -157,6 +165,7 @@
             player1box.classList.remove('active');
             player2box.classList.remove('active');
         }
+
         // showing winner
         const showWinner = player => {
             finish.style.display = 'block';
@@ -179,6 +188,7 @@
                 message.textContent = `Cat's game! It's a tie!`;
             }
         }
+
         // reset game
         const newGameButton = document.querySelector('#finish .button');
         newGameButton.addEventListener('click', () => {
@@ -186,6 +196,7 @@
             player2box.classList.remove('active');
             resetGame();
         });
+
         // resetting game
         const resetGame = () => {
             moveCounter = 0;
