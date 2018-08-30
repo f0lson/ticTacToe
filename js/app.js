@@ -4,13 +4,11 @@
         const player2box = document.querySelector('#player2');
         const player1Name = document.querySelector('#player1 p');
         const player2Name = document.querySelector('#player2 p');
-
         // start screen
         const startScreen = document.querySelector('.screen-start');
         const startButton = startScreen.querySelector('.button');
         const player1NameInput = startScreen.querySelector('input#screen-start-name-1');
         const player2NameInput = startScreen.querySelector('input#screen-start-name-2');
-
         // setting player names
         const setPlayerNames = () => {
             let p1NameValue = player1NameInput.value;
@@ -20,27 +18,11 @@
             player1NameInput.value = '';
             player2NameInput.value = '';
         }
-
-        // function to randomly generate who starts
-        const randomStart = () => {
-            let randomNumber = Math.floor( Math.random()*2+1);
-            if ( randomNumber === 1 ) {
-                if ( player2box.classList.contains('active') ) {
-                    player2box.classList.remove('active');
-                }
-                player1box.classList.add('active');
-            } else {
-                if ( player1box.classList.contains('active') ) {
-                    player1box.classList.remove('active');
-                }
-                player2box.classList.add('active');
-            }
-        }
-
+        // starting game
         startButton.addEventListener('click', () => {
             startScreen.style.top = '-100vh';
             setPlayerNames();
-            randomStart();
+            player2box.classList.add('active');
         });
         let finish = document.querySelector('#finish');
 
@@ -172,6 +154,8 @@
             });
             player1marked = [];
             player2marked = [];
+            player1box.classList.remove('active');
+            player2box.classList.remove('active');
         }
         // showing winner
         const showWinner = player => {
@@ -198,17 +182,15 @@
         // reset game
         const newGameButton = document.querySelector('#finish .button');
         newGameButton.addEventListener('click', () => {
+            player1box.classList.remove('active');
+            player2box.classList.remove('active');
             resetGame();
         });
         // resetting game
         const resetGame = () => {
             moveCounter = 0;
-            if (player2box.classList.contains('active')) {
-                player2box.classList.remove('active');
-                player1box.classList.add('active');
-            }
-            finish.style.display = 'none';
-            randomStart();
             clearBoard(boxes);
+            player2box.classList.add('active');
+            finish.style.display = 'none';
         }
 }());

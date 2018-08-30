@@ -220,6 +220,11 @@ h1 {
     background-image: url(../img/x.svg);
 }
 
+.box-filled-1,
+.box-filled-2 {
+    cursor: default !important;
+}
+
 .screen-start {
     display: block;
     position: absolute;
